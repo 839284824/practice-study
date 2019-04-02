@@ -1,4 +1,4 @@
-package binarysearchtree;
+package datastructure.binarysearchtree;
 
 /**
  * @author gongzhao
@@ -63,7 +63,7 @@ public  class Logic {
      * @param root
      * @return
      */
-    static BinaryNode insert(Integer data,BinaryNode root){
+    static BinaryNode insert(Integer data, BinaryNode root){
         if (root==null){
             return new BinaryNode(data,null,null);
         }

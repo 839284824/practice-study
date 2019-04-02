@@ -1,7 +1,6 @@
-package binarysearchtree;
+package datastructure.binarysearchtree;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author gongzhao
@@ -16,7 +15,7 @@ public class BinaryNode {
     private BinaryNode left;
     private BinaryNode right;
 
-    public BinaryNode(Integer data,BinaryNode left,BinaryNode right){
+    public BinaryNode(Integer data, BinaryNode left, BinaryNode right){
         this.data = data;
         this.left =  left;
         this.right = right;

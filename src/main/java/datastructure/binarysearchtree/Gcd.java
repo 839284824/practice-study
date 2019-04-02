@@ -1,4 +1,4 @@
-package gcd;
+package datastructure.binarysearchtree;
 
 /**
  * @author gongzhao
