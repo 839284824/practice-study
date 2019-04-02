@@ -26,4 +26,5 @@ public class News {
      * 评论数
      */
     private Integer issue;
+
 }
