@@ -1,4 +1,4 @@
-package middle.lucene;
+package middle.lucene.analyzer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
@@ -50,6 +50,14 @@ public class MulitAnalyzers {
         //中文智能分词
         log.info("中文智能分词");
         analyzer = new SmartChineseAnalyzer();
+        printAnalyzers(analyzer, ch);
+        //Ik分词器
+        log.info("IK分词器");
+        analyzer = new IKAnalyzer8x();
+        printAnalyzers(analyzer, ch);
+        //智能切割算法
+        log.info("IK智能分词");
+        analyzer = new IKAnalyzer8x(true);
         printAnalyzers(analyzer, ch);
     }
 
