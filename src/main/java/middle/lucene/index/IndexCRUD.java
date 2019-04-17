@@ -18,14 +18,15 @@ import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 /**
- * 创建索引
+ * 索引crud
  */
 @Slf4j
-public class Createlndex {
+public class IndexCRUD {
 
 
     public static void main(String[] args) {
@@ -37,7 +38,7 @@ public class Createlndex {
         newsl.setIssue(672);
         News news2 = new News();
         news2.setId(2);
-        news2.setTitle("北大迎4380 名新生农村学生700 多人近年最多");
+        news2.setTitle("北大迎4380名新生农村学生700多人近年最多");
         news2.setContent(" 昨天，北京大学迎来4380 名来自全国各地及数十个国家 的本科新生。其中， 农村学生共700 余名，为近年最多");
         news2.setIssue(995);
         News news3 = new News();
@@ -106,6 +107,10 @@ public class Createlndex {
             inWriter.addDocument(docl);
             inWriter.addDocument(doc2);
             inWriter.addDocument(doc3);
+            //删除文档，根据某个词项
+            inWriter.deleteDocuments(new Term("title", "美国"));
+            //更新文档,先删除title包含美国的文档，然后用doc2加入到索引中，完成更新操作
+            inWriter.updateDocument(new Term("title", "美国"), doc2);
             inWriter.commit();
             inWriter.close();
             dir.close();
