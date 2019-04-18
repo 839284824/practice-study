@@ -108,6 +108,12 @@
             <artifactId>lucene-memory</artifactId>
             <version>8.0.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch -->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>6.7.1</version>
+        </dependency>
 
     </dependencies>
 
