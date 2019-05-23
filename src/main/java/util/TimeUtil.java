@@ -3,6 +3,8 @@ package util;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,8 +29,12 @@ public final class TimeUtil {
 
 
     public static void main(String[] arg) {
-        String month = getMonthByOffset(new Date(), -1);
-        log.info("month:{}", month);
+        String date = LocalDate.now().plusDays(-1).toString();
+        log.info("date:{}", date);
+        String time = LocalTime.of(0, 0, 0).toString();
+        String time1 = LocalTime.parse("00:00:00").toString();
+        log.info("time:{}    time1:{}", time, time1);
+
     }
 
 }
