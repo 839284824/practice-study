@@ -53,13 +53,13 @@ public class BinarySearch {
     }
 
 
-//    public static void main(String[] arg) {
-//        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-//        int x = 3;
-//        int index = index(arr, x, 0, arr.length);
-//        int index1 = index(arr, x, 0, arr.length);
-//        System.out.println(index);
-//        System.out.println(index1);
-//    }
+    public static void main(String[] arg) {
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int x = 3;
+        int index = index(arr, x, 0, arr.length);
+        int index1 = index(arr, x, 0, arr.length);
+        System.out.println(index);
+        System.out.println(index1);
+    }
 
 }
