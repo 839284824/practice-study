@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.BitSet;
 
+/**
+ * 去除重复的数
+ */
 @Slf4j
 public class MissingNumberInArray {
 
@@ -32,7 +35,6 @@ public class MissingNumberInArray {
         int lastMissingIndex = 0;
         for (int i = 0; i < missingCount; i++) {
             lastMissingIndex = bitSet.nextClearBit(lastMissingIndex);
-
             log.info("原始数据:{}--缺失数字:{}", numbers, ++lastMissingIndex);
         }
     }

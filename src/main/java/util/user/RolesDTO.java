@@ -1,7 +1,6 @@
-package com.renrenche.sales.mismanage.dto.user;
+package util.user;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.renrenche.sales.mismanage.common.utils.DateUtils;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -44,9 +43,7 @@ public class RolesDTO implements Serializable {
     private String description;
 
 
-    @JSONField(format = DateUtils.DATE_FORMAT_FULL_STRING)
     private Date createdAt;
-    @JSONField(format = DateUtils.DATE_FORMAT_FULL_STRING)
     private Date updatedAt;
 
     private List<PivotDTO> pivot;

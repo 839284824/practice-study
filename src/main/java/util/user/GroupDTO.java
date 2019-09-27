@@ -1,4 +1,4 @@
-package com.renrenche.sales.mismanage.dto.user;
+package util.user;
 
 import lombok.Data;
 
@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * 用户分组
+ *
  * @author zhangguangliang
  */
 @Data
@@ -21,4 +22,9 @@ public class GroupDTO implements Serializable {
     private String groupLeaderName;
 
     private List<UserDTO> users;
+
+    /**
+     * 组长信息
+     */
+    private UserDTO leaderInfo;
 }

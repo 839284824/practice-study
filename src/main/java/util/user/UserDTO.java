@@ -1,4 +1,4 @@
-package com.renrenche.sales.mismanage.dto.user;
+package util.user;
 
 import lombok.Data;
 
