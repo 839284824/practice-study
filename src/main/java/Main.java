@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] a) throws Exception {
+
         LoadingCache<String, String> cahceBuilder =
                 CacheBuilder.newBuilder().maximumSize(1).
                         refreshAfterWrite(2, TimeUnit.MILLISECONDS)
