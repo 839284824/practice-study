@@ -13,6 +13,11 @@ public class HystrixCommandUtil {
     private final static int DEFAULT_TIMEOUT = 50;
     private final static String DEFAULT_COMMAND_NAME = "default-command";
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+
     private static class HystrixCommandExe<T> extends HystrixCommand<T> {
         private final String commandName;
         private final Supplier<T> supplier;
@@ -85,10 +90,6 @@ public class HystrixCommandUtil {
         private Builder() {
         }
 
-        public static Builder builder() {
-            return new Builder();
-        }
-
         public Builder<T> setCommandName(String commandName) {
             this.commandName = commandName;
             return this;
@@ -115,7 +116,7 @@ public class HystrixCommandUtil {
 
 
     public static void main(String[] args) {
-        HystrixCommandUtil.Builder.builder().build().execute();
+        HystrixCommandUtil.builder().build().execute();
     }
 
 
