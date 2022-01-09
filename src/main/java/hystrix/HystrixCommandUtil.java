@@ -28,10 +28,9 @@ public class HystrixCommandUtil {
         private int timeOut = DEFAULT_TIMEOUT;
         public HystrixCommandExe(Builder builder) {
             super(
-                    Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("interActionCommandGroupKey"))
+                    Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(builder.getCommandName()))
                             .andCommandKey(HystrixCommandKey.Factory.asKey(builder.getCommandName()))
-                            /* 使用HystrixThreadPoolKey工厂定义线程池名称*/
-                            .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("interaction-" + builder.getCommandName()))
+                            .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(builder.getCommandName()))
                             .andCommandPropertiesDefaults(
                                     HystrixCommandProperties.Setter()
                                             .withExecutionIsolationStrategy(ExecutionIsolationStrategy.THREAD)
@@ -48,7 +47,7 @@ public class HystrixCommandUtil {
             this.commandName = builder.commandName;
             this.supplier = builder.supplier;
             this.fallbackValue = (T) builder.getFallbackValue();
-            this.timeOut = timeOut;
+            this.timeOut = builder.getTimeOut();
         }
 
         @Override
