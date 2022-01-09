@@ -14,10 +14,7 @@ public class HystrixCommandUtil {
     private final static String DEFAULT_COMMAND_NAME = "default-command";
 
     public static Builder builder() {
-       return Builder.builder().
-               commandName(DEFAULT_COMMAND_NAME).
-               timeOut(DEFAULT_TIMEOUT).
-               build();
+        return new Builder();
     }
 
 
@@ -25,7 +22,8 @@ public class HystrixCommandUtil {
         private final String commandName;
         private final Supplier<T> supplier;
         private final T fallbackValue;
-        private int timeOut = DEFAULT_TIMEOUT;
+        private int timeOut;
+
         public HystrixCommandExe(Builder builder) {
             super(
                     Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(builder.getCommandName()))
@@ -40,10 +38,10 @@ public class HystrixCommandUtil {
                                             .withCircuitBreakerErrorThresholdPercentage(60)
                             )
                             .andThreadPoolPropertiesDefaults(
-                    HystrixThreadPoolProperties.Setter()
-                            .withCoreSize(15)
-                            .withMaximumSize(20)
-            ));
+                                    HystrixThreadPoolProperties.Setter()
+                                            .withCoreSize(15)
+                                            .withMaximumSize(20)
+                            ));
             this.commandName = builder.commandName;
             this.supplier = builder.supplier;
             this.fallbackValue = (T) builder.getFallbackValue();
@@ -53,6 +51,7 @@ public class HystrixCommandUtil {
         @Override
         protected T getFallback() {
             try {
+                log.error("command:" + commandName + ":fallback value:" + fallbackValue);
                 return fallbackValue;
             } catch (Exception ex) {
                 return null;
@@ -63,15 +62,14 @@ public class HystrixCommandUtil {
         protected T run() throws InterruptedException {
             try {
                 return supplier.get();
-            } catch (Exception ex) {
-                throw ex;
+            } catch (Exception e) {
+                throw e;
             }
         }
     }
 
 
     @Getter
-    @lombok.Builder
     public static class Builder<T> {
         /**
          * command名称
@@ -112,23 +110,26 @@ public class HystrixCommandUtil {
             this.timeOut = timeOut;
             return this;
         }
-         public HystrixCommandExe build(){
+
+        public HystrixCommandExe build() {
             return new HystrixCommandExe(this);
         }
     }
 
 
     public static void main(String[] args) {
-        HystrixCommandUtil.builder().
+        String result = (String) HystrixCommandUtil.builder().
                 setCommandName("test").
-                setFallbackValue(null).
+                setFallbackValue("I am fallbackValue").
                 setTimeOut(100).
-                setSupplier(()-> mockRpc()).
+                setSupplier(() -> mockRpc()).
                 build().execute();
+        System.out.println(result);
     }
 
-    public static String mockRpc(){
-        return "hi";
+    public static String mockRpc() {
+        throw new RuntimeException();
+//        return "hi";
     }
 
 
