@@ -14,7 +14,10 @@ public class HystrixCommandUtil {
     private final static String DEFAULT_COMMAND_NAME = "default-command";
 
     public static Builder builder() {
-        return new Builder();
+       return Builder.builder().
+               commandName(DEFAULT_COMMAND_NAME).
+               timeOut(DEFAULT_TIMEOUT).
+               build();
     }
 
 
@@ -69,6 +72,7 @@ public class HystrixCommandUtil {
 
 
     @Getter
+    @lombok.Builder
     public static class Builder<T> {
         /**
          * command名称
@@ -116,7 +120,16 @@ public class HystrixCommandUtil {
 
 
     public static void main(String[] args) {
-        HystrixCommandUtil.builder().build().execute();
+        HystrixCommandUtil.builder().
+                setCommandName("test").
+                setFallbackValue(null).
+                setTimeOut(100).
+                setSupplier(()-> mockRpc()).
+                build().execute();
+    }
+
+    public static String mockRpc(){
+        return "hi";
     }
 
 
