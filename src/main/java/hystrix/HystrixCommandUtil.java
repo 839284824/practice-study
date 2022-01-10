@@ -51,7 +51,7 @@ public class HystrixCommandUtil {
         @Override
         protected T getFallback() {
             try {
-                log.error("command:" + commandName + ":timeout:" + timeOut + ":fallback value:" + fallbackValue);
+                log.error(" fallback command:" + commandName + ":timeout:" + timeOut + ":fallback value:" + fallbackValue);
                 return fallbackValue;
             } catch (Exception ex) {
                 return null;
