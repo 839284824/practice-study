@@ -1,10 +1,16 @@
 package hystrix;
 
+import com.github.rholder.retry.Retryer;
+import com.github.rholder.retry.RetryerBuilder;
+import com.github.rholder.retry.StopStrategies;
+import com.github.rholder.retry.WaitStrategies;
+import com.google.common.base.Predicates;
 import com.netflix.hystrix.*;
 import com.netflix.hystrix.HystrixCommandProperties.ExecutionIsolationStrategy;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -21,7 +27,7 @@ public class HystrixCommandUtil {
     private static class HystrixCommandExe<T> extends HystrixCommand<T> {
         private final String commandName;
         private final Supplier<T> supplier;
-        private final T fallbackValue;
+        private final Supplier<T> fallbackValue;
         private int timeOut;
 
         public HystrixCommandExe(Builder builder) {
@@ -44,7 +50,7 @@ public class HystrixCommandUtil {
                             ));
             this.commandName = builder.commandName;
             this.supplier = builder.supplier;
-            this.fallbackValue = (T) builder.getFallbackValue();
+            this.fallbackValue = builder.getFallbackValue();
             this.timeOut = builder.getTimeOut();
         }
 
@@ -52,7 +58,7 @@ public class HystrixCommandUtil {
         protected T getFallback() {
             try {
                 log.error(" fallback command:" + commandName + ":timeout:" + timeOut + ":fallback value:" + fallbackValue);
-                return fallbackValue;
+                return fallbackValue.get();
             } catch (Exception ex) {
                 return null;
             }
@@ -82,11 +88,21 @@ public class HystrixCommandUtil {
         /**
          * 熔断降级
          */
-        private T fallbackValue;
+        private Supplier<T> fallbackValue;
         /**
          * 降级时间
          */
         private int timeOut = DEFAULT_TIMEOUT;
+
+        /**
+         * 是否需要重试
+         */
+        private boolean retry;
+
+        /**
+         * 重试次数
+         */
+        private int retryCount;
 
         private Builder() {
         }
@@ -101,13 +117,23 @@ public class HystrixCommandUtil {
             return this;
         }
 
-        public Builder<T> setFallbackValue(T fallbackValue) {
-            this.fallbackValue = fallbackValue;
+        public Builder<T> setFallbackValue(Supplier<T> fallbackValueSupplier) {
+            this.fallbackValue = fallbackValueSupplier;
             return this;
         }
 
         public Builder<T> setTimeOut(int timeOut) {
             this.timeOut = timeOut;
+            return this;
+        }
+
+        public Builder<T> setRetry(boolean retry) {
+            this.retry = retry;
+            return this;
+        }
+
+        public Builder<T> setRetryCount(int retryCount) {
+            this.retryCount = retryCount;
             return this;
         }
 
@@ -117,10 +143,12 @@ public class HystrixCommandUtil {
     }
 
 
+
+
     public static void main(String[] args) {
         String result = (String) HystrixCommandUtil.builder().
                 setCommandName("test").
-                setFallbackValue("I am fallbackValue").
+                setFallbackValue(()->"I am fallbackValue").
                 setTimeOut(100).
                 setSupplier(() -> mockRpc()).
                 build().execute();
