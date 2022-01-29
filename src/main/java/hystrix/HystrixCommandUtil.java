@@ -1,16 +1,10 @@
 package hystrix;
 
-import com.github.rholder.retry.Retryer;
-import com.github.rholder.retry.RetryerBuilder;
-import com.github.rholder.retry.StopStrategies;
-import com.github.rholder.retry.WaitStrategies;
-import com.google.common.base.Predicates;
 import com.netflix.hystrix.*;
 import com.netflix.hystrix.HystrixCommandProperties.ExecutionIsolationStrategy;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -147,9 +141,9 @@ public class HystrixCommandUtil {
 
     public static void main(String[] args) {
         String result = (String) HystrixCommandUtil.builder().
-                setCommandName("test").
+                setCommandName(HystrixCommandEnum.MOCK1.getName()).
+                setTimeOut(HystrixCommandEnum.MOCK1.getTimeout()).
                 setFallbackValue(()->"I am fallbackValue").
-                setTimeOut(100).
                 setSupplier(() -> mockRpc()).
                 build().execute();
         System.out.println(result);
