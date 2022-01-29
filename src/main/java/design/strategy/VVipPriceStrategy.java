@@ -26,6 +26,6 @@ public class VVipPriceStrategy implements PriceStrategy, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        PriceStrategyFactory.register(getUserType(), new VVipPriceStrategy());
+        PriceStrategyFactory.register(getUserType(), this);
     }
 }
