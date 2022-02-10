@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SubjectProxy  implements Subject {
 
-    private Subject subject;
+    private RealSubject subject;
 
     @Override
     public void print() {
