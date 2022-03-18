@@ -14,7 +14,7 @@ public final class TransmitThreadUtil {
 
     private static TransmittableThreadLocal<Map<String, String>> threadLocal = new TransmittableThreadLocal(true){
         @Override
-        public Map<String, Object> initialValue() {
+        public Map<String, String> initialValue() {
             return new HashMap<>(16);
         }
     };
