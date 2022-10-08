@@ -2,9 +2,11 @@ package merge;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /*
@@ -14,16 +16,17 @@ import java.util.concurrent.Executors;
  **/
 @Slf4j
 @Data
-public class QueueManager<T> {
-
-    Executors executors;
+public class QueueManager<T>{
 
      public QueueManager(int workSize){
+
+         this.executorService = Executors.newFixedThreadPool(10) ;
+         this.workers = new ArrayList<>(10);
+
         for (int i = 0 ; i < workSize ; i++ ){
             FlushWorker flushWorker = new FlushWorker(1000);
-            Thread flushThread = new Thread(flushWorker);
-            flushThread.start();
             workers.add(flushWorker);
+            executorService.submit(flushWorker);
         }
     }
 
@@ -32,7 +35,12 @@ public class QueueManager<T> {
     /**
      * 工作队列
      */
-    private List<FlushWorker<T>> workers = new ArrayList<>(10);
+    private List<FlushWorker<T>> workers;
+
+    /**
+     * 线程池管理工作线程
+     */
+    private ExecutorService executorService;
 
     /*
      * @desc 添加元素
@@ -49,6 +57,4 @@ public class QueueManager<T> {
         }
         return res;
     }
-
-
 }
