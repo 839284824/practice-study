@@ -37,12 +37,7 @@ public class FlushWorker<T> implements Runnable {
      * @return boolean
      **/
     public boolean add(T t) {
-        boolean reslut =  queue.offer(t);
-        if (reslut){
-            Thread thread = new Thread(this);
-            thread.start();
-        }
-        return reslut;
+        return queue.offer(t);
     }
 
 
