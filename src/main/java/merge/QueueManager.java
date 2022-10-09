@@ -6,8 +6,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /*
  * @desc 队列管理
@@ -20,13 +19,14 @@ public class QueueManager<T>{
 
      public QueueManager(int workSize){
 
-         this.executorService = Executors.newFixedThreadPool(10) ;
+         this.threadPool = new ThreadPoolExecutor(2, 4, 3, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
+                 new ThreadPoolExecutor.DiscardOldestPolicy());
          this.workers = new ArrayList<>(10);
 
         for (int i = 0 ; i < workSize ; i++ ){
             FlushWorker flushWorker = new FlushWorker(1000);
             workers.add(flushWorker);
-            executorService.submit(flushWorker);
+            threadPool.submit(flushWorker);
         }
     }
 
@@ -40,7 +40,7 @@ public class QueueManager<T>{
     /**
      * 线程池管理工作线程
      */
-    private ExecutorService executorService;
+    private ThreadPoolExecutor threadPool;
 
     /*
      * @desc 添加元素
