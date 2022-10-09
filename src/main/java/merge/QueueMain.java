@@ -3,7 +3,7 @@ package merge;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class QueueClient {
+public class QueueMain {
 
     public static void main(String[] args) {
         QueueManager queueManager = new QueueManager(5);
