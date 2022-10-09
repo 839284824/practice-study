@@ -1,8 +1,6 @@
 package cache;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import com.google.common.cache.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -13,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class LocalingCacheDemo {
 
     LocalingCacheDemo() {
+        RemovalListener<String, String> listener = notification -> System.out.println("[" + notification.getKey() + ":" + notification.getValue() + "] is removed!");
         loadingCache
                 //CacheBuilder的构造函数是私有的，只能通过其静态方法newBuilder()来获得CacheBuilder的实例
                 = CacheBuilder.newBuilder()
@@ -27,9 +26,7 @@ public class LocalingCacheDemo {
                 //设置要统计缓存的命中率,会消耗一些性能，生产环境谨慎使用
                 .recordStats()
                 //设置缓存的移除通知默认情况下，监听器方法是在移除缓存时同步调用的。因为缓存的维护和请求响应通常是同时进行的，代价高昂的监听器方法在同步模式下会拖慢正常的缓存请求。在这种情况下，你可以使用RemovalListeners.asynchronous(RemovalListener, Executor)把监听器装饰为异步操作。
-                .removalListener(notification -> {
-                    log.info(notification.getKey() + " " + notification.getValue() + " 被移除,原因:" + notification.getCause());
-                })
+                .removalListener(listener)
                 //build方法中可以指定CacheLoader，在缓存不存在时通过CacheLoader的实现自动加载缓存
                 .build(new CacheLoader<String, String>() {
                     @Override

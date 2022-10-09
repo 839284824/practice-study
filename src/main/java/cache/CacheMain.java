@@ -16,7 +16,6 @@ public class CacheMain {
         log.info(localingCacheDemo.getFromCache("B"));
         log.info(localingCacheDemo.getFromCache("C"));
         log.info(localingCacheDemo.getFromCache("D"));
-        log.info(localingCacheDemo.getFromCache("A"));
 
         Thread.sleep(5000);
         log.info(" sleep 5s , key:A ,value:" + localingCacheDemo.getFromCache("A"));
