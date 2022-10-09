@@ -54,4 +54,7 @@ public class LocalingCacheDemo {
     }
 
 
+    public CacheStats stats(){
+        return loadingCache.stats();
+    }
 }
