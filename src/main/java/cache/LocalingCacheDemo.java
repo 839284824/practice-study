@@ -1,5 +1,6 @@
 package cache;
 
+import com.google.common.base.Preconditions;
 import com.google.common.cache.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -41,6 +42,8 @@ public class LocalingCacheDemo {
 
 
     public String getFromCache(String key) {
+        //前置条件
+        Preconditions.checkNotNull(key);
         try {
             return loadingCache.get(key);
         } catch (ExecutionException e) {
